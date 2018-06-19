@@ -3,6 +3,7 @@ var request = require('request')
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var keys = require('./keys.js');
+var fs = require('fs');
 
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
@@ -74,8 +75,17 @@ function displayMovie(movieURL) {
     });
 };
 
+function readingFile() {
+    fs.readFile('random.txt', 'UTF-8', function(err,data){
+        console.log(data);
+        var data1 = data.split(',');
+        data1new = data1[1].replace(/['"]+/g, '');
+        displaySong(data1new);
+    })
+}
+
 var command = process.argv[2];
-var songQuery;
+var songQuery = [];
 var movieQuery = [];
 var movieURL;
 
@@ -86,7 +96,10 @@ switch (command) {
     case 'spotify-this-song':
         console.log("Here is this song on spotify:");
         if (process.argv[3]) {
-            songQuery = process.argv[3]
+                for (var i = 3; i < process.argv.length; i++){
+                songQuery.push(process.argv[i]);
+            }
+            songQuery = songQuery.join(' ');
             displaySong(songQuery)
         } else {
             displaySong('The Sign Ace of Base');
@@ -109,11 +122,16 @@ switch (command) {
         }
         break;
     case 'do-what-it-says':
-        console.log("ok");
+        console.log("Ok, reading file...");
+        readingFile();
         break;
     default:
         console.log("sorry")
 }
+
+
+// startSearch(command);
+
 
 
 
