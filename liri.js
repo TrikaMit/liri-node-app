@@ -16,6 +16,8 @@ function displayTweets() {
             console.log("Here are your latest Tweets!")
             for (var i = tweets.length - 1; i > -1; i--) {
                 console.log("#" + [tweets.length - i] + ") " + tweets[i].text)
+                fs.appendFile('log.txt', "#" + [tweets.length - i] + ") " + tweets[i].text + "\n", function(){
+                })
             }
         } else {
             console.log("Sorry, there seems to be an error. Please try again.")
@@ -48,6 +50,10 @@ function displaySong(songQuery) {
             console.log("---------------------------------------------------")
             console.log("Album: " + song.album.name);
             console.log("---------------------------------------------------")
+        dataWrite = [];
+        dataWrite.push(song.name, artistArray, song.preview_url, song.album.name)
+        fs.appendFile('log.txt', dataWrite.join(', ') + "\n", function(){
+        })
         })
 }
 //displays OMDB info
@@ -63,7 +69,7 @@ function displayMovie(movieURL) {
         console.log("---------------------------------------------------");
         console.log("IMDB Rating: " + JSON.parse(body).imdbRating)
         console.log("---------------------------------------------------")
-        // console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value)
+        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value)
         console.log("---------------------------------------------------")
         console.log("Country where movie was produced: " + JSON.parse(body).Country);
         console.log("Language: " + JSON.parse(body).Language);
@@ -72,6 +78,12 @@ function displayMovie(movieURL) {
         console.log("---------------------------------------------------")
         console.log("Actors: " + JSON.parse(body).Actors)
         console.log("---------------------------------------------------")
+
+        dataWrite = [];
+        bS = JSON.parse(body);
+        dataWrite.push(bS.Title, bS.Year, bS.imdbRating, bS.Ratings[1].Value, bS.Country, bS.Language, bS.Plot, bS.Actors)
+        fs.appendFile('log.txt', dataWrite.join(', ') + "\n", function(){
+        })
     });
 };
 
