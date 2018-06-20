@@ -10,11 +10,11 @@ enter *node liri movie-this* followed by the movie of your choice to get movie i
 ##### Or... For fun...
 enter *node do-what-it-says* to allow liri to get information from the __random.txt__ file and execute the relevant code.
 __ALSO__ note that all of the data is printed to the log.txt file.
-###This was made using...
+### This was made using
 __npm:__ packages used were dotenv, request, twitter, and node-spotify-api. 
 __APIs:__ twitter, spotify, and OMDB.
 
 Find this project, along with my other projects, at https://trikamit.github.io/Trika_Portfolio/
 
 ## ENJOY
-
+g
