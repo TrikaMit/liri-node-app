@@ -14,9 +14,11 @@ function displayTweets() {
         if (!error) {
             // console.log(tweets);
             console.log("Here are your latest Tweets!")
+            fs.appendFile('log.txt', "Here are your latest Tweets!: \n", function(){})
             for (var i = tweets.length - 1; i > -1; i--) {
-                console.log("#" + [tweets.length - i] + ") " + tweets[i].text)
-                fs.appendFile('log.txt', "#" + [tweets.length - i] + ") " + tweets[i].text + "\n", function(){
+                var tweetData = "#" + [tweets.length - i] + ") " + tweets[i].text
+                console.log(tweetData)
+                fs.appendFile('log.txt', tweetData + "\n", function(){
                 })
             }
         } else {
@@ -37,52 +39,40 @@ function displaySong(songQuery) {
             var artistArray = [];
             // console.log(song)
             // console.log(data.tracks.items[0]);
-            console.log("Song Name: " + song.name);
-            console.log("---------------------------------------------------")
+            var songName = "Song Name: " + song.name;
+            var artistName;
+            var songLinkName = "Preview Link of Song: " + song.external_urls.spotify;
+            var albumName = "Album: " + song.album.name;
             for (var i = 0; i < song.artists.length; i++) {
                 artistArray.push(song.artists[i].name);
                 artistArray.join(', ')
+                artistName = "Artists: " + artistArray
             }
-            console.log("Artists: " + artistArray)
-            console.log("---------------------------------------------------")
-            console.log("Preview Link of Song: " + song.preview_url);
-            // console.log(song.external_urls.spotify);
-            console.log("---------------------------------------------------")
-            console.log("Album: " + song.album.name);
-            console.log("---------------------------------------------------")
         dataWrite = [];
-        dataWrite.push(song.name, artistArray, song.preview_url, song.album.name)
-        fs.appendFile('log.txt', dataWrite.join(', ') + "\n", function(){
+        dataWrite.push(songName, artistName, songLinkName, albumName)
+        console.log(dataWrite.join(', \n'));
+        fs.appendFile('log.txt', dataWrite.join(', \n ') + "\n", function(){
         })
         })
 }
 //displays OMDB info
 function displayMovie(movieURL) {
     request(movieURL, function(error, response, body){
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        // console.log('body:')
-        // console.log(body)
-        console.log("Movie Title: " + JSON.parse(body).Title);
-        console.log("---------------------------------------------------");
-        console.log("Year: " + JSON.parse(body).Year);
-        console.log("---------------------------------------------------");
-        console.log("IMDB Rating: " + JSON.parse(body).imdbRating)
-        console.log("---------------------------------------------------")
-        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value)
-        console.log("---------------------------------------------------")
-        console.log("Country where movie was produced: " + JSON.parse(body).Country);
-        console.log("Language: " + JSON.parse(body).Language);
-        console.log("---------------------------------------------------");
-        console.log("Plot: " + JSON.parse(body).Plot);
-        console.log("---------------------------------------------------")
-        console.log("Actors: " + JSON.parse(body).Actors)
-        console.log("---------------------------------------------------")
-
-        dataWrite = [];
+        // console.log('error:', error); // Print the error if one occurred
+        // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         bS = JSON.parse(body);
-        dataWrite.push(bS.Title, bS.Year, bS.imdbRating, bS.Ratings[1].Value, bS.Country, bS.Language, bS.Plot, bS.Actors)
-        fs.appendFile('log.txt', dataWrite.join(', ') + "\n", function(){
+        var movieTitle = "Movie Title: " + bS.Title;
+        var movieYear = "Year: " + bS.Year;
+        var IMDBRating = "IMDB Rating: " + bS.imdbRating;
+        var RTRating = "Rotten Tomatoes Rating: " + bS.Ratings[1].Value;
+        var movieCountry = "Country where movie was produced: " + bS.Country;
+        var movieLanguage = "Language: " + bS.Language;
+        var moviePlot = "Plot: " + bS.Plot;
+        var movieActors = "Actors: " + bS.Actors;
+        dataWrite = [];
+        dataWrite.push(movieTitle, movieYear, IMDBRating, RTRating, movieCountry, movieLanguage, moviePlot, movieActors)
+        console.log(dataWrite.join(', \n'))
+        fs.appendFile('log.txt', dataWrite.join(', \n') + "\n", function(){
         })
     });
 };
@@ -118,7 +108,7 @@ switch (command) {
         }
         break;
     case 'movie-this':
-        console.log('movie stuff');
+        console.log('Here is the information for your movie: ');
         if (process.argv[3]){
             for (var i = 3; i < process.argv.length; i++){
                 movieQuery.push(process.argv[i]);
@@ -138,7 +128,7 @@ switch (command) {
         readingFile();
         break;
     default:
-        console.log("sorry")
+        console.log("Sorry, you did not enter a valid command.")
 }
 
 
